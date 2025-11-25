@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor Saber Pro & TyT - UTS</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+
+<body>
+
+<div class="container">
+    
+    <div class="left-section">
+        <!-- Logo Universidad (diagonal arriba) -->
+        <img th:src="@{/img/logo-universidad.png}" alt="Logo Universidad" class="logo-universidad">
+        
+        <!-- Logo Programa (diagonal abajo) -->
+        <img th:src="@{/img/logo-programa.png}" alt="Logo Programa" class="logo-programa">
+    </div>
+
+    <div class="right-section">
+        <div class="login-card">
+            <h2>Iniciar Sesión</h2>
+
+            <!-- MENSAJE DE ERROR -->
+            <div th:if="${error}" class="message error-message">
+                Usuario o contraseña incorrectos.
+            </div>
+
+            <div th:if="${param.logout}" class="message success-message">
+                Sesión cerrada correctamente.
+            </div>
+
+            <!-- FORMULARIO LOGIN -->
+            <form th:action="@{/login}" method="post">
+
+                <div class="input-group">
+                    <span class="input-icon">👤</span>
+                    <input type="email"
+                           id="username"
+                           name="username"
+                           placeholder="Correo institucional"
+                           required>
+                </div>
+
+                <div class="input-group">
+                    <span class="input-icon">🔒</span>
+                    <input type="password"
+                           id="password"
+                           name="password"
+                           placeholder="Contraseña"
+                           required>
+                </div>
+
+                <button type="submit">ENTRAR</button>
+            </form>
+        </div>
+        
+        <footer>
+            © 2025 Unidades Tecnologicas de Santander - Sistema Saber Pro & TyT
+        </footer>
+    </div>
+
+</div>
+
+</body>
+</html>

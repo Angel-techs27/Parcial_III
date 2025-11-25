@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es"
+      th:replace="layout/admin-layout :: layout(
+            title = ${usuario.id == null ? 'Registrar Usuario' : 'Editar Usuario'},
+            content = 'thisContent'
+      )">
+
+<div th:fragment="thisContent">
+
+    <!-- Título y botón de volver -->
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <h2 th:text="${usuario.id == null ? 'Registrar Usuario' : 'Editar Usuario'}"></h2>
+
+        <a class="btn btn-outline-primary" th:href="@{/admin/usuarios}">
+            <i class="bi bi-arrow-left"></i> Regresar
+        </a>
+    </div>
+
+    <!-- Card Principal -->
+    <div class="card shadow-sm rounded p-4">
+
+        <form th:action="@{/admin/usuarios/guardar}" method="post">
+
+            <input type="hidden" th:field="${usuario.id}">
+
+            <!-- Campo Correo -->
+            <div class="mb-4">
+                <label for="correo" class="form-label">Correo electrónico</label>
+                <input type="email" id="correo" class="form-control"
+                       th:field="${usuario.correo}" required>
+            </div>
+
+            <!-- Campo Contraseña -->
+            <div class="mb-4">
+                <label for="password" class="form-label">Contraseña</label>
+                <input type="password" id="password" class="form-control"
+                       th:placeholder="${usuario.id == null ? '' : 'Dejar vacío para no cambiar'}"
+                       th:field="${usuario.password}">
+            </div>
+
+            <!-- Selección de Rol -->
+            <div class="mb-4">
+                <label for="rol" class="form-label">Rol del usuario</label>
+                <select id="rol" class="form-select" th:field="${usuario.rol}">
+                    <option value="ADMIN">Administrador</option>
+                    <option value="COORDINADOR">Coordinador</option>
+                    <option value="ESTUDIANTE">Estudiante</option>
+                    <option value="DOCENTE">Docente</option>
+                </select>
+            </div>
+
+            <!-- Botones -->
+            <div class="d-flex justify-content-end gap-2">
+                <button class="btn btn-success" type="submit">
+                    <i class="bi bi-check-circle"></i> Guardar
+                </button>
+
+                <a th:href="@{/admin/usuarios}" class="btn btn-secondary">
+                    Cancelar
+                </a>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+</html>

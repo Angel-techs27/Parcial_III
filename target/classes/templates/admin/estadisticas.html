@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+
+<head th:replace="layout/admin-layout :: head('Estadísticas')"></head>
+
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <!-- SIDEBAR -->
+        <div th:replace="layout/admin-layout :: sidebar"></div>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <div class="col-md-10 p-4">
+            
+            <!-- HEADER -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="mb-0">📈 Estadísticas Saber Pro / TyT</h3>
+                <div class="d-flex gap-2">
+                    <button onclick="window.print()" class="btn btn-info">
+                        🖨️ Imprimir
+                    </button>
+                    <a th:href="@{/admin/dashboard}" class="btn btn-secondary">
+                        ⬅️ Volver
+                    </a>
+                </div>
+            </div>
+
+            <!-- ESTADÍSTICAS GENERALES -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-3">
+                    <div class="card p-4 text-center bg-primary">
+                        <h6>Total Estudiantes</h6>
+                        <h2 th:text="${total}">34</h2>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card p-4 text-center bg-success">
+                        <h6>Promedio General</h6>
+                        <h2 th:text="${promedio}">142.5</h2>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card p-4 text-center bg-info">
+                        <h6>Puntaje Máximo</h6>
+                        <h2 th:text="${maximo}">200</h2>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card p-4 text-center bg-danger">
+                        <h6>Puntaje Mínimo</h6>
+                        <h2 th:text="${minimo}">96</h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GRÁFICOS PRINCIPALES -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-6">
+                    <div class="card shadow-lg">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0">📊 Rango Puntaje</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="chartRangos" height="250"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ANÁLISIS DE INCENTIVOS -->
+            <div class="card shadow-lg mb-4">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0">🎁 Incentivos UTS</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-md-3">
+                            <div class="p-3 border rounded">
+                                <h2 class="text-success" th:text="${rango170_200}">2</h2>
+                                <p class="mb-0"><strong>Excelente</strong></p>
+                                <small class="text-muted">> 171 puntos</small>
+                                <br>
+                                <small>Nota 5.0 + 100% beca</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="p-3 border rounded">
+                                <h2 class="text-warning" th:text="${rango150_170}">3</h2>
+                                <p class="mb-0"><strong>Muy Bueno</strong></p>
+                                <small class="text-muted">151-170 puntos</small>
+                                <br>
+                                <small>Nota 4.7 + 50% beca</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="p-3 border rounded">
+                                <h2 class="text-primary" th:text="${rango120_150}">8</h2>
+                                <p class="mb-0"><strong>Bueno</strong></p>
+                                <small class="text-muted">120-150 puntos</small>
+                                <br>
+                                <small>Nota 4.5</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="p-3 border rounded">
+                                <h2 class="text-secondary" th:text="${rango80_120 + rango0_80}">21</h2>
+                                <p class="mb-0"><strong>Sin Incentivo</strong></p>
+                                <small class="text-muted">< 120 puntos</small>
+                                <br>
+                                <small>Sin beneficios</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script th:inline="javascript">
+    // Gráfico de Rangos (Bar)
+    const ctxRangos = document.getElementById('chartRangos');
+    new Chart(ctxRangos, {
+        type: 'bar',
+        data: {
+            labels: ['< 80', '80-119', '120-150', '151-170', '> 171'],
+            datasets: [{
+                label: 'Cantidad de Estudiantes',
+                data: [
+                    /*[[${rango0_80}]]*/ 1,
+                    /*[[${rango80_120}]]*/ 20,
+                    /*[[${rango120_150}]]*/ 8,
+                    /*[[${rango150_170}]]*/ 3,
+                    /*[[${rango170_200}]]*/ 2
+                ],
+                backgroundColor: [
+                    'rgba(255, 209, 220, 0.7)',
+                    'rgba(230, 230, 250, 0.7)',
+                    'rgba(180, 215, 232, 0.7)',
+                    'rgba(255, 249, 196, 0.7)',
+                    'rgba(193, 225, 193, 0.7)'
+                ],
+                borderColor: [
+                    'rgba(255, 209, 220, 1)',
+                    'rgba(230, 230, 250, 1)',
+                    'rgba(180, 215, 232, 1)',
+                    'rgba(255, 249, 196, 1)',
+                    'rgba(193, 225, 193, 1)'
+                ],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

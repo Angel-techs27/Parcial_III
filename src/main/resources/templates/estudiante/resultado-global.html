@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados Globales - Saber TyT</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+
+            <!-- SIDEBAR ESTUDIANTE -->
+            <nav class="col-md-2 sidebar p-3">
+                <h4>🎓 Mi Panel</h4>
+                <div class="nav flex-column">
+                    <a th:href="@{/estudiante/dashboard}" class="nav-link active">📊 Dashboard</a>
+                    <a th:href="@{/estudiante/identificacion}" class="nav-link">🆔 Identificación</a>
+                    <a th:href="@{/estudiante/resultado-global}" class="nav-link">🎯 Resultado Global</a>
+                    <a th:href="@{/estudiante/resultados-asignaturas}" class="nav-link">📚 Resultados por Asignatura</a>
+                    <a th:href="@{/estudiante/beneficio}" class="nav-link">🎁 Mi Beneficio</a>
+                    <a th:href="@{/estudiante/comparacion}" class="nav-link">📈 Comparación</a>
+                    <a th:href="@{/logout}" class="nav-link text-danger">🚪 Cerrar Sesión</a>
+                </div>
+            </nav>
+
+            <!-- CONTENIDO PRINCIPAL -->
+            <div class="col-md-10 p-4">
+                <h2>🎯 Mi Resultado Global Saber TyT</h2>
+                <p class="text-muted">Puntaje general obtenido en la prueba</p>
+
+                <!-- TARJETA PUNTAJE PRINCIPAL -->
+                <div class="card shadow-lg mb-4">
+                    <div class="card-header bg-success">
+                        <h5 class="mb-0 text-dark">📊 Puntaje Global</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-md-6 text-center border-end">
+                                <h1 class="display-1 fw-bold mb-3" th:text="${estudiante.puntajeSaberPro}">200</h1>
+                                <p class="lead mb-2">de 200 puntos posibles</p>
+                                <span class="badge bg-success fs-5" th:text="${estudiante.nivelSaberPro}">Nivel 4</span>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span><strong>Mi Puntaje</strong></span>
+                                    <span class="badge bg-primary fs-5" th:text="${estudiante.puntajeSaberPro}">200</span>
+                                </div>
+                                <div class="progress" style="height: 35px;">
+                                    <div class="progress-bar" th:style="'width: ' + (${estudiante.puntajeSaberPro} * 100.0 / 200) + '%;'"></div>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2 mt-3">
+                                    <span><strong>Promedio del Grupo</strong></span>
+                                    <span class="badge bg-secondary fs-5" th:text="${promedioTexto}">142.5</span>
+                                </div>
+                                <div class="progress" style="height: 35px;">
+                                    <div class="progress-bar" th:style="'width: ' + (${promedioInt} * 100.0 / 200) + '%;'"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COMPARACIÓN CON EL GRUPO -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-3">
+                        <div class="card text-center p-3">
+                            <small class="text-muted">🏆 Puntaje Máximo</small>
+                            <h2 th:text="${maximo}">200</h2>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center p-3">
+                            <small class="text-muted">📊 Promedio</small>
+                            <h2 th:text="${promedioTexto}">142.5</h2>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center p-3">
+                            <small class="text-muted">📉 Puntaje Mínimo</small>
+                            <h2 th:text="${minimo}">96</h2>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center p-3">
+                            <small class="text-muted">👥 Total Estudiantes</small>
+                            <h2 th:text="${totalEstudiantes}">34</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- INTERPRETACIÓN DEL RESULTADO -->
+                <div class="card shadow-lg mb-4">
+                    <div class="card-header bg-info">
+                        <h5 class="mb-0 text-dark">💡 Interpretación de tu Resultado</h5>
+                    </div>
+                    <div class="card-body">
+                        <div th:if="${estudiante.puntajeSaberPro >= 171}" class="alert alert-success">
+                            <h5 class="alert-heading">🌟 ¡Excelente Desempeño!</h5>
+                            <ul class="mb-0">
+                                <li>Alcanzaste el <strong>nivel más alto (Nivel 4)</strong></li>
+                                <li>Tu puntaje te ubica en el <strong>rango superior</strong> a nivel nacional</li>
+                                <li>Competencias sobresalientes en todas las áreas evaluadas</li>
+                            </ul>
+                        </div>
+
+                        <div th:if="${estudiante.puntajeSaberPro >= 151 && estudiante.puntajeSaberPro < 171}" class="alert alert-warning">
+                            <h5 class="alert-heading">⭐ ¡Muy Buen Desempeño!</h5>
+                            <ul class="mb-0">
+                                <li>Alcanzaste el <strong>Nivel 3</strong> en la prueba</li>
+                                <li>Tu desempeño está <strong>por encima del promedio</strong></li>
+                            </ul>
+                        </div>
+
+                        <div th:if="${estudiante.puntajeSaberPro >= 120 && estudiante.puntajeSaberPro < 151}" class="alert alert-primary">
+                            <h5 class="alert-heading">✅ Buen Desempeño</h5>
+                            <ul class="mb-0">
+                                <li>Alcanzaste el <strong>Nivel 2</strong> en la prueba</li>
+                                <li>Desempeño satisfactorio en las competencias</li>
+                            </ul>
+                        </div>
+
+                        <div th:if="${estudiante.puntajeSaberPro >= 80 && estudiante.puntajeSaberPro < 120}" class="alert alert-secondary">
+                            <h5 class="alert-heading">📌 Desempeño Básico</h5>
+                            <ul class="mb-0">
+                                <li>Alcanzaste el <strong>Nivel 1</strong> en la prueba</li>
+                                <li>Cumples con el <strong>requisito mínimo</strong> para graduación</li>
+                            </ul>
+                        </div>
+
+                        <div th:if="${estudiante.puntajeSaberPro < 80}" class="alert alert-danger">
+                            <h5 class="alert-heading">⚠️ Atención Importante</h5>
+                            <ul class="mb-0">
+                                <li><strong>No cumples</strong> con el requisito mínimo de graduación</li>
+                                <li>Debes presentar <strong>nuevamente</strong> la prueba Saber TyT</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ESCALA DE DESEMPEÑO -->
+                <div class="card shadow-lg mb-4">
+                    <div class="card-header bg-dark">
+                        <h5 class="mb-0 text-light">📝 Escala de Desempeño Nacional</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Nivel</th>
+                                    <th>Rango</th>
+                                    <th>Clasificación</th>
+                                    <th>Descripción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Nivel 4</strong></td>
+                                    <td>171 - 200</td>
+                                    <td><span class="badge bg-success">Excelente</span></td>
+                                    <td>Desempeño sobresaliente en todas las competencias</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Nivel 3</strong></td>
+                                    <td>151 - 170</td>
+                                    <td><span class="badge bg-warning text-dark">Muy Bueno</span></td>
+                                    <td>Desempeño notable por encima del promedio</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Nivel 2</strong></td>
+                                    <td>120 - 150</td>
+                                    <td><span class="badge bg-primary">Bueno</span></td>
+                                    <td>Desempeño satisfactorio en las competencias</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Nivel 1</strong></td>
+                                    <td>80 - 119</td>
+                                    <td><span class="badge bg-secondary">Básico</span></td>
+                                    <td>Desempeño básico cumple requisitos mínimos</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Sin Nivel</strong></td>
+                                    <td>< 80</td>
+                                    <td><span class="badge bg-danger">Insuficiente</span></td>
+                                    <td>No cumple requisitos para graduación</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- BOTÓN REGRESAR -->
+                <div class="text-center">
+                    <a th:href="@{/estudiante/dashboard}" class="btn btn-primary btn-lg">← Volver</a>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

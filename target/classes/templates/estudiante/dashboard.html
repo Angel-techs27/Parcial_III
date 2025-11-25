@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Dashboard - Saber PRO</title>
+    
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+
+            <!-- SIDEBAR ESTUDIANTE -->
+            <nav class="col-md-2 sidebar p-3">
+                <h4>🎓 Mi Panel</h4>
+                <div class="nav flex-column">
+                    <a th:href="@{/estudiante/dashboard}" class="nav-link active">📊 Dashboard</a>
+                    <a th:href="@{/estudiante/identificacion}" class="nav-link">🆔 Identificación</a>
+                    <a th:href="@{/estudiante/resultado-global}" class="nav-link">🎯 Resultado Global</a>
+                    <a th:href="@{/estudiante/resultados-asignaturas}" class="nav-link">📚 Resultados por Asignatura</a>
+                    <a th:href="@{/estudiante/beneficio}" class="nav-link">🎁 Mi Beneficio</a>
+                    <a th:href="@{/estudiante/comparacion}" class="nav-link">📈 Comparación</a>
+                    <a th:href="@{/logout}" class="nav-link text-danger">🚪 Cerrar Sesión</a>
+                </div>
+            </nav>
+
+            <!-- CONTENIDO PRINCIPAL -->
+            <div class="col-md-10 p-4">
+
+                <!-- HEADER -->
+                <h2>👋 Bienvenido, <span th:text="${estudiante.primerApellido}">Estudiante</span></h2>
+                <p class="text-muted">Consulta tus resultados de la prueba Saber TyT</p>
+
+                <!-- ALERTA PARA ESTUDIANTES ANULADOS -->
+                <div th:if="${estudiante.estado == 'ANULADO'}" class="alert alert-dark mb-4">
+                    <h4 class="alert-heading">🚫 Prueba Anulada</h4>
+                    <p><strong>Tu prueba Saber TyT fue anulada por el ICFES.</strong> Esto significa que tus resultados no son válidos y no puedes acceder a los beneficios de grado.</p>
+                </div>
+
+                <!-- TARJETAS RESUMEN -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-3">
+                        <div class="card p-3 text-center h-100" th:classappend="${estudiante.estado == 'ANULADO'} ? 'bg-dark text-light' : 'bg-purple text-light'">
+                            <small>Mi Puntaje Global</small>
+                            <h1 th:text="${estudiante.puntajeSaberPro}">200</h1>
+                            <small th:if="${estudiante.estado == 'ANULADO'}">Prueba Anulada</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card p-3 text-center h-100" th:classappend="${estudiante.estado == 'ANULADO'} ? 'bg-dark text-light' : 'bg-green text-light'">
+                            <small>Mi Posición</small>
+                            <h1 th:text="${posicion}">#5</h1>
+                            <small>de <span th:text="${totalEstudiantes}">34</span></small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card p-3 text-center h-100" th:classappend="${estudiante.estado == 'ANULADO'} ? 'bg-dark text-light' : 'bg-yellow text-dark'">
+                            <small>Percentil</small>
+                            <h1 th:text="${percentilTexto}">97.1%</h1>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card p-3 text-center h-100" th:classappend="${estudiante.estado == 'ANULADO'} ? 'bg-dark text-light' : 'bg-info text-dark'">
+                            <small>Mi Incentivo</small>
+                            <h4 th:text="${incentivo}">Excelente</h4>
+                            <a th:href="@{/estudiante/beneficio}" class="text-dark">Ver detalles →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECCIÓN: IDENTIFICACIÓN -->
+                <div class="card mb-4 shadow">
+                    <div class="card-header bg-primary d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0 text-light">🆔 1. Identificación del Estudiante</h5>
+                        <a th:href="@{/estudiante/identificacion}" class="btn btn-light btn-sm">Ver más →</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <p><strong>📝 # Registro:</strong> <code th:text="${estudiante.numeroRegistro}">EK20183007722</code></p>
+                            </div>
+                            <div class="col-md-4">
+                                <p><strong>🆔 Tipo de Documento:</strong> <span th:text="${estudiante.tipoDocumento}">CC</span></p>
+                            </div>
+                            <div class="col-md-4">
+                                <p><strong>👤 Apellido:</strong> <span th:text="${estudiante.primerApellido}">BARBOSA</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECCIÓN: RESULTADO GLOBAL -->
+                <div class="card mb-4 shadow">
+                    <div class="card-header bg-success d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0 text-light">🎯 2. Mi Resultado Global Saber TyT</h5>
+                        <a th:href="@{/estudiante/resultado-global}" class="btn btn-light btn-sm">Ver más →</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 text-center">
+                                <p class="text-muted mb-2">Mi Puntaje Global</p>
+                                <h1 class="display-1" th:text="${estudiante.puntajeSaberPro}">200</h1>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Promedio del Grupo:</strong> <span th:text="${promedioTexto}">137.8</span></p>
+                                <div class="progress">
+                                    <div class="progress-bar bg-warning" th:style="'width: ' + (${promedioInt} * 100.0 / 200) + '%;'"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ENLACES RÁPIDOS -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-4">
+                        <a th:href="@{/estudiante/resultados-asignaturas}" class="text-decoration-none">
+                            <div class="card h-100 border-primary">
+                                <div class="card-body text-center">
+                                    <h5>📚 Resultados por Asignatura</h5>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a th:href="@{/estudiante/beneficio}" class="text-decoration-none">
+                            <div class="card h-100 border-warning">
+                                <div class="card-body text-center">
+                                    <h5>🎁 Mi Beneficio</h5>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a th:href="@{/estudiante/comparacion}" class="text-decoration-none">
+                            <div class="card h-100 border-success">
+                                <div class="card-body text-center">
+                                    <h5>📈 Comparación</h5>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

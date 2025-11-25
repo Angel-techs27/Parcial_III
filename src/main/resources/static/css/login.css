@@ -1,0 +1,421 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #0f0f0f;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Fondo animado con gradientes */
+body::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255, 77, 109, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(88, 166, 255, 0.3) 0%, transparent 50%);
+    animation: gradientShift 15s ease infinite;
+}
+
+body::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.02) 50%, transparent 70%);
+    animation: shimmer 8s linear infinite;
+}
+
+@keyframes gradientShift {
+    0%, 100% { 
+        filter: hue-rotate(0deg) brightness(1);
+        transform: scale(1);
+    }
+    50% { 
+        filter: hue-rotate(30deg) brightness(1.2);
+        transform: scale(1.1);
+    }
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+}
+
+/* Contenedor principal - Glassmorphism */
+.container {
+    width: 95%;
+    max-width: 1000px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    z-index: 1;
+    animation: containerAppear 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes containerAppear {
+    from { 
+        opacity: 0; 
+        transform: scale(0.9) translateY(50px);
+        filter: blur(10px);
+    }
+    to { 
+        opacity: 1; 
+        transform: scale(1) translateY(0);
+        filter: blur(0);
+    }
+}
+
+/* Panel izquierdo - Diseño oscuro minimalista */
+.left-section {
+    background: linear-gradient(135deg, rgba(15, 15, 15, 0.8) 0%, rgba(30, 30, 30, 0.6) 100%);
+    color: #ffffff;
+    padding: 60px 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Patrón de puntos decorativo */
+.left-section::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 30px 30px;
+    opacity: 0.3;
+}
+
+/* Línea vertical de acento neon */
+.left-section::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 20%;
+    width: 3px;
+    height: 60%;
+    background: linear-gradient(
+        180deg, 
+        transparent 0%,
+        #58a6ff 20%,
+        #ff4d6d 50%,
+        #7877c6 80%,
+        transparent 100%
+    );
+    box-shadow: 
+        0 0 20px rgba(88, 166, 255, 0.5),
+        0 0 40px rgba(255, 77, 109, 0.3);
+    animation: neonPulse 3s ease-in-out infinite;
+}
+
+@keyframes neonPulse {
+    0%, 100% { opacity: 0.5; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.1); }
+}
+
+/* Logo Universidad - Esquina superior */
+.logo-universidad {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    width: 180px;
+    height: auto;
+    filter: 
+        drop-shadow(0 0 20px rgba(88, 166, 255, 0.3))
+        brightness(1.1);
+    z-index: 2;
+    animation: logoFloat 4s ease-in-out infinite;
+}
+
+/* Logo Programa - Esquina inferior opuesta */
+.logo-programa {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    width: 180px;
+    height: auto;
+    filter: 
+        drop-shadow(0 0 20px rgba(255, 77, 109, 0.3))
+        brightness(1.1);
+    z-index: 2;
+    animation: logoFloat 4s ease-in-out infinite 2s;
+}
+
+@keyframes logoFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Panel derecho - Glassmorphism claro */
+.right-section {
+    padding: 60px 60px 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    backdrop-filter: blur(10px);
+}
+
+.login-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+}
+
+.login-card h2 {
+    text-align: center;
+    margin-bottom: 35px;
+    font-size: 2rem;
+    background: linear-gradient(135deg, #58a6ff 0%, #ff4d6d 50%, #7877c6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    animation: titleGlow 3s ease-in-out infinite;
+}
+
+@keyframes titleGlow {
+    0%, 100% { filter: drop-shadow(0 0 10px rgba(88, 166, 255, 0.3)); }
+    50% { filter: drop-shadow(0 0 20px rgba(255, 77, 109, 0.5)); }
+}
+
+/* Mensajes */
+.message {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 14px;
+    border-radius: 15px;
+    font-weight: 500;
+    backdrop-filter: blur(10px);
+    border: 1px solid;
+    animation: messageSlide 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes messageSlide {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.error-message {
+    background: rgba(255, 77, 109, 0.15);
+    color: #ff4d6d;
+    border-color: rgba(255, 77, 109, 0.3);
+}
+
+.success-message {
+    background: rgba(88, 166, 255, 0.15);
+    color: #58a6ff;
+    border-color: rgba(88, 166, 255, 0.3);
+}
+
+/* Formulario */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 20px;
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.4);
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 18px 18px 18px 55px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    color: #ffffff;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+input:focus {
+    border-color: rgba(88, 166, 255, 0.5);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 
+        0 0 0 4px rgba(88, 166, 255, 0.1),
+        0 8px 20px rgba(0, 0, 0, 0.2);
+    outline: none;
+    transform: translateY(-2px);
+}
+
+input:focus + .input-icon {
+    color: #58a6ff;
+    transform: scale(1.1);
+}
+
+input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Botón - Diseño neon */
+button {
+    width: 100%;
+    padding: 18px;
+    border: none;
+    border-radius: 15px;
+    background: linear-gradient(135deg, #58a6ff 0%, #7877c6 100%);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    margin-top: 10px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 
+        0 4px 20px rgba(88, 166, 255, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.6s ease;
+}
+
+button:hover {
+    background: linear-gradient(135deg, #7877c6 0%, #ff4d6d 100%);
+    transform: translateY(-3px);
+    box-shadow: 
+        0 8px 30px rgba(120, 119, 198, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+button:hover::before {
+    left: 100%;
+}
+
+button:active {
+    transform: translateY(-1px) scale(0.98);
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 20px 10px;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.85rem;
+    margin-top: 20px;
+    line-height: 1.5;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .container {
+        grid-template-columns: 1fr;
+    }
+
+    .left-section {
+        padding: 60px 40px;
+        min-height: 280px;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .left-section::after {
+        right: auto;
+        left: 20%;
+        top: auto;
+        bottom: 0;
+        width: 60%;
+        height: 3px;
+        background: linear-gradient(
+            90deg, 
+            transparent 0%,
+            #58a6ff 20%,
+            #ff4d6d 50%,
+            #7877c6 80%,
+            transparent 100%
+        );
+    }
+
+    .right-section {
+        padding: 50px 40px 30px;
+    }
+
+    .logo-universidad {
+        width: 140px;
+        top: 20px;
+        left: 20px;
+    }
+
+    .logo-programa {
+        width: 140px;
+        bottom: 20px;
+        right: 20px;
+    }
+}
+
+@media (max-width: 500px) {
+    .container {
+        border-radius: 20px;
+    }
+
+    .login-card h2 {
+        font-size: 1.6rem;
+    }
+
+    .logo-universidad {
+        width: 110px;
+        top: 15px;
+        left: 15px;
+    }
+
+    .logo-programa {
+        width: 110px;
+        bottom: 15px;
+        right: 15px;
+    }
+
+    .right-section {
+        padding: 40px 30px 25px;
+    }
+}
